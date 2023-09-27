@@ -55,7 +55,7 @@ def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수
     _posted = str(soup.select_one('div.author'))
     author = re.sub('<.+>', '', _posted).strip()
     _text = soup.select_one('meta[property="article:published_time"]')['content']
-    _result = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}.[0-9]{2}:[0-9]{2}:[0-9]{2}', _text).group()
+    _result = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}.[0-9]{2}:[0-9]{2}', _text).group()
     date = re.sub('[A-Z]', ' ', _result)
     contents = soup.select_one('div.contents_style').text.replace('\n','').strip()
 
