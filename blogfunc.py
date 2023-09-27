@@ -48,6 +48,17 @@ def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수
     date = re.search('[0-9]{4}-.+:[0-9]{2}', soup.select_one('div.date > div.fr > h4').text).group()
     contents = soup.select_one('div.article').text.replace('\n', '').strip()
 
+  elif soup.select_one('div.titleWrap > h2') :  # 기타 3
+    print('type5')
+    title = soup.select_one('div.titleWrap > h2').text
+    category = soup.select_one('div.another_category > h4 > a').text
+    _posted = str(soup.select_one('div.author'))
+    author = re.sub('<.+>', '', _posted).strip()
+    _text = soup.select_one('meta[property="article:published_time"]')['content']
+    _result = re.search('[0-9]{4}-[0-9]{2}-[0-9]{2}.[0-9]{2}:[0-9]{2}:[0-9]{2}', _text).group()
+    date = re.sub('[A-Z]', ' ', _result)
+    contents = soup.select_one('div.contents_style').text.replace('\n','').strip()
+
 
   else :
     print('오류')
