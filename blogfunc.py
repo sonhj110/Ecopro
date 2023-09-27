@@ -32,12 +32,12 @@ def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수
     date = blog.select_one('span.se_publishDate').text
     contents = blog.select('div.se_component_wrap')[1].text.strip().replace('\n','')
 
-  elif soup.select_one('div.hgroup > h1') :   # 기타 1
+  elif soup.select_one('div.hgroup > h1') :  # 기타1
     print('type3')
     title = soup.select_one('div.hgroup > h1').text
-    category = soup.select_one('div.category').text
+    category = soup.select_one('div.hgroup > div.category').text
     author = soup.select_one('span.author').text
-    date = soup.select_one('span.date').text
+    date = soup.select_one('span.date').text.strip()
     contents = soup.select_one('div.contents_style').text.replace('\n','').strip()
 
   elif soup.select('div.titlebox > h2 > a') :   # 기타 2
