@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from tqdm.notebook import tqdm as tqdm
 import re
+import ray
 
 
 def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수 
@@ -74,8 +75,9 @@ def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수
   return (title, category, author, date, contents, URL)
 
 
+ray.init()
 
-
+@ray.remote
 def get_blog_list(keyword, startdate, enddate) :  # 키워드&날짜 넣어서 10페이지까지 블로그 긁어오는 함수
   start = 1
   URL = 'https://s.search.naver.com/p/blog/search.naver?where=blog&sm=tab_pge&api_type=1&query={0}&rev=44&start={1}&dup_remove=1&post_blogurl=&post_blogurl_without=&nso=so%3Add%2Cp%3Afrom{2}to{3}&nlu_query=%7B%22r_category%22%3A%2233+25%22%7D&dkey=0&source_query=&nx_search_query={0}&spq=0&_callback=viewMoreContents'.format(keyword, start, startdate, enddate)
@@ -101,5 +103,9 @@ def get_blog_list(keyword, startdate, enddate) :  # 키워드&날짜 넣어서 1
   return pd.DataFrame(li, columns=['title','category','nick','date','content', 'url'])
 
 
-get_blog_list('테슬라', '20230921', '20230921')
+tesla = get_blog_list.remote('테슬라', '20230921', '20230921')
+result = ray.get(tesla)
+print(result)
+
+ray.shutdown()
 
