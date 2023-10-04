@@ -1,8 +1,11 @@
+
 import requests
 from bs4 import BeautifulSoup
 import re
 import ray
 import csv
+import time
+start_time = time.time()
 
 
 def get_blog(URL) :   # 블로그에서 내용 긁어오는 함수 
@@ -110,3 +113,8 @@ tesla = get_blog_list.remote('테슬라', '20230921', '20230921')
 result = ray.get(tesla)
 
 ray.shutdown()
+
+
+end_time = time.time()
+
+print('time : ', end_time - start_time)
